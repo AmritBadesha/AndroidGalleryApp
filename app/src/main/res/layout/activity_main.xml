@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Add Caption"
+        android:text="Add Caption Text"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="519dp" />
 
