@@ -79,7 +79,7 @@
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Add Caption Text"
+        android:text="Add Caption"
         app:layout_constraintBottom_toTopOf="@+id/left"
         app:layout_constraintStart_toStartOf="parent" />
 
