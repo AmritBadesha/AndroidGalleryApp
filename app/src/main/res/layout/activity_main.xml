@@ -75,11 +75,11 @@
         android:id="@+id/addCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="28dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Add Caption"
+        android:text="Add Caption Text"
         app:layout_constraintBottom_toTopOf="@+id/left"
         app:layout_constraintStart_toStartOf="parent" />
 
