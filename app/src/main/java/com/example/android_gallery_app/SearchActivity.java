@@ -3,19 +3,19 @@ package com.example.android_gallery_app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity {
-
-    private static final String TAG = "SearchActivity";
 
     private TextView mDisplayStartDate;
     private TextView mDisplayEndDate;
@@ -41,6 +41,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
         mDisplayStartDate = (TextView) findViewById(R.id.textViewDate);
         mDisplayEndDate = (TextView) findViewById(R.id.textViewDate2);
 
@@ -75,5 +76,21 @@ public class SearchActivity extends AppCompatActivity {
                 mDisplayEndDate.setText(date);
             }
         };
+    }
+
+    public void submitSearch(View view){
+        Intent i = new Intent();
+        TextView from = (TextView) findViewById(R.id.textViewDate);
+        TextView to = (TextView) findViewById(R.id.textViewDate2);
+        EditText keywords = (EditText) findViewById(R.id.etKeywords);
+        i.putExtra("STARTTIMESTAMP", from.getText() != null ? from.getText().toString() : "");
+        i.putExtra("ENDTIMESTAMP", to.getText() != null ? to.getText().toString() : "");
+        i.putExtra("KEYWORDS", keywords.getText() != null ? keywords.getText().toString() : "");
+        setResult(RESULT_OK, i);
+        finish();
+    }
+
+    public void cancel(View view){
+        finish();
     }
 }
