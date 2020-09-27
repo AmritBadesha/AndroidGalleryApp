@@ -52,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, SEARCH_ACTIVITY_REQUEST_CODE);
     }
 
+    @SuppressLint("MissingSuperCall")
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView mImageView = (ImageView) findViewById(R.id.imageView);
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+        }else if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd HH:mm:ss");
                 Date startTimestamp , endTimestamp;
@@ -158,14 +162,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         displayPhoto(photos.get(index));
-    }
-
-    @SuppressLint("MissingSuperCall")
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            ImageView mImageView = (ImageView) findViewById(R.id.imageView);
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
-        }
     }
 }
