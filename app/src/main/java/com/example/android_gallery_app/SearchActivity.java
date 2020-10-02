@@ -1,96 +1,43 @@
 package com.example.android_gallery_app;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
-
-import java.util.Calendar;
-
+import android.content.Intent; import android.os.Bundle;
+import android.view.View; import android.widget.EditText;
+import java.text.DateFormat; import java.text.SimpleDateFormat;
+import java.util.Calendar; import java.util.Date;
+import java.util.Locale;
 public class SearchActivity extends AppCompatActivity {
-
-    private TextView mDisplayStartDate;
-    private TextView mDisplayEndDate;
-    private DatePickerDialog.OnDateSetListener mDateSetListenerStart;
-    private DatePickerDialog.OnDateSetListener mDateSetListenerEnd;
-
-    private void DatePicker(DatePickerDialog.OnDateSetListener listener){
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dialog = new DatePickerDialog(
-                SearchActivity.this,
-                android.R.style.Theme_DeviceDefault_DayNight,
-                listener,
-                year,month,day);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        dialog.show();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        mDisplayStartDate = (TextView) findViewById(R.id.textViewDate);
-        mDisplayEndDate = (TextView) findViewById(R.id.textViewDate2);
-
-        mDisplayEndDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePicker(mDateSetListenerEnd);
-            }
-        });
-
-        mDisplayStartDate.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                DatePicker(mDateSetListenerStart);
-            }
-        });
-
-        mDateSetListenerStart = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month+1;
-                String date = month + "/" + day + "/" + year;
-                mDisplayStartDate.setText(date);
-            }
-        };
-
-        mDateSetListenerEnd = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month+1;
-                String date = month + "/" + day + "/" + year;
-                mDisplayEndDate.setText(date);
-            }
-        };
+        try {
+            Calendar calendar = Calendar.getInstance();
+            DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd");
+            Date now = calendar.getTime();
+            String todayStr = new SimpleDateFormat("yyyy‐MM‐dd", Locale.getDefault()).format(now);
+            Date today = format.parse((String) todayStr);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            String tomorrowStr = new SimpleDateFormat("yyyy‐MM‐dd", Locale.getDefault()).format( calendar.getTime());
+            Date tomorrow = format.parse((String) tomorrowStr);
+            ((EditText) findViewById(R.id.etFromDateTime)).setText(new SimpleDateFormat(
+                    "yyyy‐MM‐dd HH:mm:ss", Locale.getDefault()).format(today));
+            ((EditText) findViewById(R.id.etToDateTime)).setText(new SimpleDateFormat(
+                    "yyyy‐MM‐dd HH:mm:ss", Locale.getDefault()).format(tomorrow));
+        } catch (Exception ex) { }
     }
-
-    public void submitSearch(View view){
+    public void cancel(final View v) {
+        finish();
+    }
+    public void go(final View v) {
         Intent i = new Intent();
-        TextView from = (TextView) findViewById(R.id.textViewDate);
-        TextView to = (TextView) findViewById(R.id.textViewDate2);
+        EditText from = (EditText) findViewById(R.id.etFromDateTime);
+        EditText to = (EditText) findViewById(R.id.etToDateTime);
         EditText keywords = (EditText) findViewById(R.id.etKeywords);
         i.putExtra("STARTTIMESTAMP", from.getText() != null ? from.getText().toString() : "");
         i.putExtra("ENDTIMESTAMP", to.getText() != null ? to.getText().toString() : "");
         i.putExtra("KEYWORDS", keywords.getText() != null ? keywords.getText().toString() : "");
         setResult(RESULT_OK, i);
-        finish();
-    }
-
-    public void cancel(View view){
         finish();
     }
 }

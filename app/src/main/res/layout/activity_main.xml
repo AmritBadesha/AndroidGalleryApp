@@ -1,86 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginBottom="94dp"
-        android:text="Left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="33dp"
-        android:layout_marginBottom="94dp"
-        android:text="Right"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+        android:id="@+id/ivGallery"
+        android:layout_width="356dp"
+        android:layout_height="265dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="39dp"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <Button
         android:id="@+id/snap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="42dp"
-        android:layout_marginEnd="41dp"
-        android:layout_marginBottom="94dp"
-        android:text="Snap"
+        android:layout_width="85dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="194dp"
+        android:layout_marginBottom="178dp"
+        android:onClick="takePhoto"
+        android:text="snap"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/right"
-        app:layout_constraintStart_toEndOf="@+id/left" />
+        app:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.786" />
 
     <Button
-        android:id="@+id/search"
+        android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="33dp"
-        android:onClick="goToSearch"
-        android:text="Search"
+        android:layout_marginStart="194dp"
+        android:onClick="scrollPhotos"
+        android:text="next"
+        app2:layout_constraintBaseline_toBaselineOf="@+id/snap"
+        app2:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/search"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/snap"
+        app:layout_constraintTop_toBottomOf="@+id/timestamp" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="347dp"
-        android:layout_height="438dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="17dp"
-        app:layout_constraintBottom_toTopOf="@+id/addCaption"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/btnPrev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="82dp"
+        android:layout_marginBottom="15dp"
+        android:onClick="scrollPhotos"
+        android:text="prev"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="622dp" />
 
     <TextView
-        android:id="@+id/timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="33dp"
-        android:text="00:00:00 01/01/2020"
+        android:id="@+id/tvTimestamp"
+        android:layout_width="340dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="345dp"
+        android:layout_marginEnd="55dp"
+        android:text=""
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.255" />
 
     <EditText
-        android:id="@+id/addCaption"
-        android:layout_width="wrap_content"
+        android:id="@+id/etCaption"
+        android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="272dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Add Caption Text"
-        app:layout_constraintBottom_toTopOf="@+id/left"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text=""
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:onClick="goToSearch"
+        android:text="search"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintStart_toStartOf="@+id/ivGallery"
+        tools:layout_editor_absoluteX="291dp"
+        tools:layout_editor_absoluteY="635dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/NoResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility = "gone"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="123dp"
+        tools:layout_editor_absoluteY="598dp"
+        tools:text="Sorry No results" />
 </androidx.constraintlayout.widget.ConstraintLayout>
