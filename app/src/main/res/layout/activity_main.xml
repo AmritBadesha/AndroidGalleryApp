@@ -12,47 +12,42 @@
         android:layout_width="356dp"
         android:layout_height="265dp"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="39dp"
+        android:layout_marginTop="40dp"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintHorizontal_bias="0.0"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app2:srcCompat="@drawable/ic_launcher_foreground" />
 
     <Button
         android:id="@+id/snap"
         android:layout_width="85dp"
         android:layout_height="60dp"
         android:layout_marginStart="3dp"
-        android:layout_marginEnd="194dp"
         android:layout_marginBottom="178dp"
         android:onClick="takePhoto"
         android:text="snap"
         app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app2:layout_constraintHorizontal_bias="0.123"
         app2:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnNext"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786" />
+        app2:layout_constraintTop_toTopOf="parent"
+        app2:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="194dp"
         android:onClick="scrollPhotos"
         android:text="next"
         app2:layout_constraintBaseline_toBaselineOf="@+id/snap"
+        app2:layout_constraintBottom_toTopOf="@+id/snap"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintHorizontal_bias="0.71"
+        app2:layout_constraintStart_toEndOf="@+id/snap"
         app2:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/snap"
-        app:layout_constraintTop_toBottomOf="@+id/timestamp" />
+        app2:layout_constraintTop_toBottomOf="@+id/snap"
+        app2:layout_constraintVertical_bias="0.45" />
 
     <Button
         android:id="@+id/btnPrev"
@@ -63,39 +58,31 @@
         android:onClick="scrollPhotos"
         android:text="prev"
         app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="622dp" />
+        app2:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tvTimestamp"
         android:layout_width="340dp"
         android:layout_height="42dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="345dp"
-        android:layout_marginEnd="55dp"
         android:text=""
+        app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.255" />
+        app2:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/etCaption"
         android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="272dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="260dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
         app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app2:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSearch"
@@ -105,25 +92,17 @@
         android:onClick="goToSearch"
         android:text="search"
         app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintStart_toStartOf="@+id/ivGallery"
-        tools:layout_editor_absoluteX="291dp"
-        tools:layout_editor_absoluteY="635dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toTopOf="parent" />
+        app2:layout_constraintStart_toStartOf="@+id/ivGallery" />
 
     <TextView
         android:id="@+id/NoResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility = "gone"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="45dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="598dp"
+        android:visibility="gone"
+        app2:layout_constraintStart_toEndOf="@+id/snap"
+        app2:layout_constraintTop_toBottomOf="@+id/snap"
         tools:text="Sorry No results" />
 </androidx.constraintlayout.widget.ConstraintLayout>
