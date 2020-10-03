@@ -11,29 +11,23 @@
         android:id="@+id/ivGallery"
         android:layout_width="356dp"
         android:layout_height="265dp"
-        android:layout_marginStart="23dp"
         android:layout_marginTop="40dp"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintHorizontal_bias="0.0"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toTopOf="parent"
         app2:srcCompat="@drawable/ic_launcher_foreground" />
+
 
     <Button
         android:id="@+id/snap"
         android:layout_width="85dp"
         android:layout_height="60dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="178dp"
         android:onClick="takePhoto"
         android:text="snap"
         app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toStartOf="@+id/btnNext"
-        app2:layout_constraintHorizontal_bias="0.123"
+        app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toTopOf="parent"
-        app2:layout_constraintVertical_bias="1.0" />
-
+        app2:layout_constraintTop_toBottomOf="@+id/tvTimestamp" />
 
     <Button
         android:id="@+id/btnNext"
@@ -41,59 +35,53 @@
         android:layout_height="wrap_content"
         android:onClick="scrollPhotos"
         android:text="next"
-        app2:layout_constraintBaseline_toBaselineOf="@+id/snap"
-        app2:layout_constraintBottom_toTopOf="@+id/snap"
+        app2:layout_constraintBottom_toBottomOf="@+id/snap"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintHorizontal_bias="0.71"
         app2:layout_constraintStart_toEndOf="@+id/snap"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/snap"
-        app2:layout_constraintVertical_bias="0.45" />
+        app2:layout_constraintTop_toTopOf="@+id/snap" />
 
     <Button
         android:id="@+id/btnPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="82dp"
-        android:layout_marginBottom="15dp"
         android:onClick="scrollPhotos"
         android:text="prev"
-        app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toEndOf="parent" />
+        app2:layout_constraintBottom_toBottomOf="@+id/snap"
+        app2:layout_constraintEnd_toStartOf="@+id/snap"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toTopOf="@+id/snap" />
 
     <TextView
         android:id="@+id/tvTimestamp"
         android:layout_width="340dp"
         android:layout_height="42dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="345dp"
         android:text=""
-        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toTopOf="parent"
-        app2:layout_constraintVertical_bias="0.0" />
+        app2:layout_constraintTop_toBottomOf="@+id/ivGallery" />
 
     <EditText
         android:id="@+id/etCaption"
         android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="260dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Add Caption Text"
-        app:layout_constraintBottom_toTopOf="@+id/btnPrev"
-        app:layout_constraintStart_toStartOf="parent" />
+        app2:layout_constraintBottom_toTopOf="@+id/snap"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toBottomOf="@+id/tvTimestamp" />
 
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
         android:onClick="goToSearch"
         android:text="search"
         app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintStart_toStartOf="@+id/ivGallery" />
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toBottomOf="@+id/snap" />
 
     <TextView
         android:id="@+id/NoResults"
