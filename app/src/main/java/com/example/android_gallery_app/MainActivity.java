@@ -144,4 +144,44 @@ public class MainActivity extends AppCompatActivity {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+        } else if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd HH:mm:ss");
+                Date startTimestamp, endTimestamp;
+                try {
+                    String from = (String) data.getStringExtra("STARTTIMESTAMP");
+                    String to = (String) data.getStringExtra("ENDTIMESTAMP");
+                    startTimestamp = format.parse(from);
+                    endTimestamp = format.parse(to);
+                } catch (Exception ex) {
+                    startTimestamp = null;
+                    endTimestamp = null;
+                }
+                String keywords = (String) data.getStringExtra("KEYWORDS");
+                index = 0;
+                photos = findPhotos(startTimestamp, endTimestamp, keywords);
+
+                if (photos.size() == 0) {
+                    displayPhoto(null);
+                } else {
+                    displayPhoto(photos.get(index));
+                }
+            }
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+            EditText et = (EditText) findViewById(R.id.etCaption);
+            et.setText("");
+            photos = findPhotos(new Date(Long.MIN_VALUE), new Date(), "");
+        }
     }
+
+}
