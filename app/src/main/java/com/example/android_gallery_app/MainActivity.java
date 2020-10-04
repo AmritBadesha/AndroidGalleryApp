@@ -206,10 +206,8 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bitmap=((BitmapDrawable)drawable).getBitmap();
 
         try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "_caption_" + timeStamp + "_";
-//            File file = File.createTempFile(imageFileName, ".jpg");
-            File file = new File(mCurrentPhotoPath);
+            String filename = photos.get(index).split(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), 2)[1];
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), filename.split("/", 2)[1]);
             FileOutputStream fOut = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
