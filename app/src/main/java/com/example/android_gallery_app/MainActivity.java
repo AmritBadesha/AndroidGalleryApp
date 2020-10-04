@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,5 +186,33 @@ public class MainActivity extends AppCompatActivity {
             photos = findPhotos(new Date(Long.MIN_VALUE), new Date(), "");
         }
     }
+    //share image
+    public void shareImage(View v){
+        ImageView imageView = findViewById(R.id.ivGallery);
+        Drawable drawable=imageView.getDrawable();
+        Bitmap bitmap=((BitmapDrawable)drawable).getBitmap();
 
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "_caption_" + timeStamp + "_";
+//            File file = File.createTempFile(imageFileName, ".jpg");
+            File file = new File(mCurrentPhotoPath);
+            FileOutputStream fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true, false);
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID +".fileprovider", file);
+
+            intent.putExtra(Intent.EXTRA_STREAM, photoURI);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setType("image/jpg");
+
+            startActivity(Intent.createChooser(intent, "Share image via"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
