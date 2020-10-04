@@ -105,4 +105,20 @@
         app2:layout_constraintStart_toEndOf="@+id/snap"
         app2:layout_constraintTop_toBottomOf="@+id/snap"
         tools:text="Sorry No results" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="54dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="66dp"
+        android:onClick="deletePhoto"
+        android:text="delete"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintStart_toEndOf="@+id/btnSearch"
+        app2:layout_constraintTop_toBottomOf="@+id/btnNext"
+        tools:text="delete" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -123,6 +123,22 @@ public class MainActivity extends AppCompatActivity {
         }
         displayPhoto(photos.get(index));
     }
+
+    public void deletePhoto(View v){
+        String filename = photos.get(index).split(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), 2)[1];
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), filename.split("/", 2)[1]);
+        boolean deleted = file.delete();
+        if(deleted){
+            if (photos.size() == 0) {
+                displayPhoto(null);
+            } else if(photos.size() < index+1){
+                displayPhoto(photos.get(--index));
+            } else {
+                displayPhoto(photos.get(index));
+            }
+        }
+    }
+
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         TextView tv = (TextView) findViewById(R.id.tvTimestamp);
@@ -151,10 +167,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
-        } else if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd HH:mm:ss");
                 Date startTimestamp, endTimestamp;
