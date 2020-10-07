@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,10 +31,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath, photosFilePath;
     private JSONObject photos = null;
+
     private int index = 0;
     Button btnNext;
     Button btnPrev;
@@ -151,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             File photosFile = File.createTempFile("myPhotos", ".txt",storageDir);
             photosFilePath = photosFile.getAbsolutePath();
         }
+        //list.add(new Photo(R.mipmap.ic_launcher, 10.0, 1.1, "202000101", "this is a caption"));
     }
     public void showOriginalView(View v) throws IOException {
         boolean fileExists = false;
@@ -213,7 +221,8 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             e.printStackTrace();
         }
     }
-    public void goToSearch(View view) {
+    public void goToSearch(View view) throws IOException {
+        writeToFile();
         Intent intent = new Intent(this, SearchActivity.class);
         startActivityForResult(intent, SEARCH_ACTIVITY_REQUEST_CODE);
     }
@@ -246,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
     }
 
     public void findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
+        List<Photo> removedPhotos = new ArrayList<Photo>();
         File file = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
         File[] fList = file.listFiles();
@@ -257,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
                             && f.lastModified() <= endTimestamp.getTime())) {
                         for (int i = 0; i < list.size(); i++) {
                             if (f.getPath().equals(list.get(i).getFile())) {
-                                list.remove(list.get(i));
+                                removedPhotos.add(list.get(i));
                             }
                         }
                     }
@@ -271,18 +281,19 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             for (Photo photo: list) {
                 if (!(new Double(topLeftCoord[0]) < photo.getLat() && new Double(topLeftCoord[0]) < photo.getLng())
                         && !(new Double(bottomRightCoord[0]) > photo.getLat() && new Double(bottomRightCoord[0]) > photo.getLng())) {
-                    list.remove(list.get(j));
+                    removedPhotos.add(photo);
                 }
                 j++;
             }
         }
         if (keywords.length() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                if (!list.get(i).getCaption().contains(keywords)) {
-                    list.remove(list.get(i));
+            for(Photo ph : list) {
+                if (!ph.getCaption().contains(keywords)) {
+                    removedPhotos.add(ph);
                 }
             }
         }
+        list.removeAll(removedPhotos);
         if(list.isEmpty() == true ) {
             displayPhoto("");
         } else {
@@ -336,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         TextView tv = (TextView) findViewById(R.id.tvTimestamp);
         EditText et = (EditText) findViewById(R.id.etCaption);
         if (path == null || path == "") {
+            System.out.println("R.mipmap.ic_launcher" + R.mipmap.ic_launcher);
             iv.setImageResource(R.mipmap.ic_launcher);
             et.setText("");
             tv.setText("");

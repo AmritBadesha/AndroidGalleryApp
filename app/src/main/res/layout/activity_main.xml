@@ -19,7 +19,8 @@
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toTopOf="parent"
-        app2:srcCompat="@drawable/ic_launcher_foreground" />
+        app2:srcCompat="@drawable/ic_launcher_foreground"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
     <Button
