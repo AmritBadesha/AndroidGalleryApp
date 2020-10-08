@@ -9,105 +9,148 @@
 
     <ImageView
         android:id="@+id/ivGallery"
-        android:layout_width="356dp"
-        android:layout_height="265dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="27dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="42dp"
+        app2:layout_constraintBottom_toBottomOf="@+id/tvTimestamp"
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toTopOf="parent"
-        app2:srcCompat="@drawable/ic_launcher_foreground" />
+        app2:srcCompat="@drawable/ic_launcher_foreground"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
     <Button
         android:id="@+id/snap"
-        android:layout_width="85dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginTop="83dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="86dp"
         android:onClick="takePhoto"
         android:text="snap"
-        app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/tvTimestamp" />
+        app2:layout_constraintBottom_toTopOf="@+id/addCaption"
+        app2:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app2:layout_constraintStart_toEndOf="@+id/btnPrev"
+        app2:layout_constraintTop_toTopOf="@+id/etCaption" />
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="33dp"
         android:onClick="scrollPhotos"
         android:text="next"
-        app2:layout_constraintBottom_toBottomOf="@+id/snap"
+        app2:layout_constraintBottom_toTopOf="@+id/delete"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toEndOf="@+id/snap"
-        app2:layout_constraintTop_toTopOf="@+id/snap" />
+        app2:layout_constraintStart_toEndOf="@+id/snap" />
 
     <Button
         android:id="@+id/btnPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="21dp"
         android:onClick="scrollPhotos"
         android:text="prev"
-        app2:layout_constraintBottom_toBottomOf="@+id/snap"
+        app2:layout_constraintBottom_toTopOf="@+id/reset"
         app2:layout_constraintEnd_toStartOf="@+id/snap"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toTopOf="@+id/snap" />
+        app2:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvTimestamp"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="42dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="59dp"
         android:text=""
+        app2:layout_constraintBottom_toTopOf="@+id/etCaption"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/ivGallery" />
+        app2:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/etCaption"
-        android:layout_width="372dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="280dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Add Caption Text"
-        app2:layout_constraintBottom_toTopOf="@+id/snap"
+        app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/tvTimestamp" />
+        app2:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:onClick="goToSearch"
         android:text="search"
-        app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/snap" />
+        app2:layout_constraintStart_toStartOf="@+id/snap"
+        app2:layout_constraintTop_toTopOf="@+id/reset" />
 
     <TextView
         android:id="@+id/NoResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="7dp"
         android:text="TextView"
         android:visibility="gone"
-        app2:layout_constraintStart_toEndOf="@+id/snap"
-        app2:layout_constraintTop_toBottomOf="@+id/snap"
+        app2:layout_constraintBottom_toTopOf="@+id/delete"
+        app2:layout_constraintStart_toEndOf="@+id/btnSearch"
+        app2:layout_constraintTop_toTopOf="@+id/delete"
         tools:text="Sorry No results" />
 
     <Button
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="54dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginStart="26dp"
         android:onClick="deletePhoto"
         android:text="delete"
-        app2:layout_constraintBottom_toBottomOf="parent"
-        app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toEndOf="@+id/btnSearch"
-        app2:layout_constraintTop_toBottomOf="@+id/btnNext"
+        app2:layout_constraintBaseline_toBaselineOf="@+id/btnSearch"
+        app2:layout_constraintStart_toStartOf="@+id/NoResults"
         tools:text="delete" />
+
+    <Button
+        android:id="@+id/addCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="48dp"
+        android:onClick="addCaption"
+        android:text="Add Caption"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="9dp"
+        android:onClick="showOriginalView"
+        android:text="Reset Data"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toBottomOf="@+id/snap" />
+
+    <Button
+        android:id="@+id/btnShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:onClick="shareImage"
+        android:text="Share"
+        app2:layout_constraintStart_toStartOf="@+id/btnSearch"
+        app2:layout_constraintTop_toBottomOf="@+id/btnSearch" />
 </androidx.constraintlayout.widget.ConstraintLayout>
