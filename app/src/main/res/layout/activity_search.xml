@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="27dp"
+        android:focusable="true"
         android:ems="10"
         android:inputType="date"
         android:textSize="24sp"
