@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //presenter = (MainActivityContract.Presenter) new MainPresenter(this);
-
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPrev = (Button) findViewById(R.id.btnPrev);
         imageView = findViewById(R.id.ivGallery);

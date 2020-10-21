@@ -27,7 +27,10 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     private MainView mainView;
 
     public PhotoList(MainView mainView){
+
         this.mainView = mainView;
+        //writeToFile();
+
     }
 
     public Photo addCaption(String caption) {
@@ -49,11 +52,24 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     public void deletePhoto(String mCurrentPhotoPath) throws IOException {
         for (Photo photo: list) {
             if(photo.getFile().equals(mCurrentPhotoPath)) {
-                list.remove(photo);
-                File file = getExternalFilesDir(photo.getFile());
-                file.delete();
+                File file = new File(Environment.getExternalStorageDirectory()
+                        .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
+                File[] fList = file.listFiles();
+                if (fList != null) {
+                    for (File f : fList) {
+                        String split[] = f.getPath().split("\\.");
+                        if (!split[split.length - 1].equals(".txt")) {
+                            for (int i = 0; i < list.size(); i++) {
+                                if (f.getPath().equals(photo.getFile())) {
+                                    f.delete();
+                                    list.remove(photo);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
                 //writeToFile();
-                //displayPhoto("");
                 break;
             }
         }
@@ -137,6 +153,8 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
                 currentPhoto++;
             }
         }
+        if(list.size()<1)
+            return null;
         Iterator itr=list.iterator();
         int i = 0; Photo photo = list.get(currentPhoto);
         while(itr.hasNext()){
