@@ -1,5 +1,6 @@
 package com.example.android_gallery_app;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -13,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
     public String currentPhoto;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
             e.printStackTrace();
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void showOriginalView() throws IOException {
         boolean fileExists = false;
         File file = new File(Environment.getExternalStorageDirectory()
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void clickReset(View v) throws IOException {
         showOriginalView();
     }
@@ -159,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
         startActivityForResult(intent, SEARCH_ACTIVITY_REQUEST_CODE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void deletePhoto(View view) throws IOException {
         photoListPresenter.deletePhoto(mCurrentPhotoPath);
         displayPhoto(photoListPresenter.getPhoto());
@@ -182,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
         }
     }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void scrollPhotos(View v) {
         Photo photo = null;
         switch (v.getId()) {
@@ -200,10 +209,12 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
             displayPhoto(photo);
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addCaption(View v) {
         displayPhoto(photoListPresenter.addCaption(caption.getText().toString()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void displayPhoto(Photo photo) {
         if (photo == null) {
             System.out.println("R.mipmap.ic_launcher" + R.mipmap.ic_launcher);
@@ -211,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
             caption.setText("");
             time.setText("");
         } else {
+
             mCurrentPhotoPath = photo.getFile();
             imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
             time.setText(photo.getTimeStamp());
@@ -219,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                     caption.setText(photo.getCaption());
                 } else {
                     caption.setText("");
+
                 }
             } else {
                 caption.setText("");
@@ -235,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -265,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
             }
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
