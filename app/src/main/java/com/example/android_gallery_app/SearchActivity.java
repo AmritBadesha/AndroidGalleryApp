@@ -21,9 +21,9 @@ public class SearchActivity extends AppCompatActivity {
             String tomorrowStr = new SimpleDateFormat("yyyy‐MM‐dd", Locale.getDefault()).format( calendar.getTime());
             Date tomorrow = format.parse((String) tomorrowStr);
             ((EditText) findViewById(R.id.etFromDateTime)).setText(new SimpleDateFormat(
-                    "yyyy‐MM‐dd HH:mm:ss", Locale.getDefault()).format(today));
+                    "yyyy‐MM‐dd", Locale.getDefault()).format(today));
             ((EditText) findViewById(R.id.etToDateTime)).setText(new SimpleDateFormat(
-                    "yyyy‐MM‐dd HH:mm:ss", Locale.getDefault()).format(tomorrow));
+                    "yyyy‐MM‐dd", Locale.getDefault()).format(tomorrow));
         } catch (Exception ex) { }
     }
     public void cancel(final View v) {

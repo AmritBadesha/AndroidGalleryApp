@@ -1,11 +1,11 @@
 package com.example.android_gallery_app;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,16 +14,19 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android_gallery_app.model.PhotoList;
+import com.example.android_gallery_app.presenter.PhotoListPresenter;
+import com.example.android_gallery_app.view.MainView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,14 +34,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,80 +46,46 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity implements Serializable{
+public class MainActivity extends AppCompatActivity implements Serializable, MainView {
 
-    class Photo implements Serializable {
-        String file, caption, timeStamp;
-        Double lat, lng;
-
-        Photo(String file, Double lat, Double lng, String timeStamp) {
-            this.file = file;
-            this.lat = lat;
-            this.lng = lng;
-            this.timeStamp = timeStamp;
-        }
-        Photo(String file, Double lat, Double lng, String timeStamp, String caption) {
-            this.file = file;
-            this.lat = lat;
-            this.lng = lng;
-            this.timeStamp = timeStamp;
-            this.caption = caption;
-        }
-        public String getFile() {
-            return file;
-        }
-
-        public String getTimeStamp() {
-            return timeStamp;
-        }
-
-        public Double getLng() {
-            return lng;
-        }
-
-        public Double getLat() {
-            return lat;
-        }
-
-        public void setCaption(String caption) {
-            this.caption = caption;
-        }
-
-        public String getCaption() {
-            return caption;
-        }
-        @Override
-        public String toString() {
-            return  this.getFile()
-                    + "," + this.getLng()
-                    + "," + this.getLat()
-                    + "," + this.getTimeStamp()
-                    + "," + this.getCaption()
-                    + "\n";
-        }
-    }
+    private PhotoListPresenter photoListPresenter;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath, photosFilePath;
-    private JSONObject photos = null;
+    //private JSONObject photos = null;
 
-    private int index = 0;
+    //private int index = 0;
+
     Button btnNext;
     Button btnPrev;
-    Button button;
-    List<Photo> list = new ArrayList<Photo>();
-    ArrayList<Photo> foundPhotos = new ArrayList<>();
+    Button reset;
+    ImageView imageView;
+    EditText caption;
+    TextView time;
+
+    //Button button;
+    //List<Photo> list = new ArrayList<Photo>();
+    //ArrayList<Photo> foundPhotos = new ArrayList<>();
     static final int SEARCH_ACTIVITY_REQUEST_CODE = 88;
     private FusedLocationProviderClient fusedLocationClient;
     public String currentPhoto;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPrev = (Button) findViewById(R.id.btnPrev);
+        imageView = findViewById(R.id.ivGallery);
+        caption = (EditText) findViewById(R.id.etCaption);
+        time = (TextView) findViewById(R.id.tvTimestamp);
+        reset = (Button) findViewById(R.id.reset);
+
+        photoListPresenter = new PhotoList(MainActivity.this);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         try {
             showOriginalView();
@@ -128,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             e.printStackTrace();
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void showOriginalView() throws IOException {
         boolean fileExists = false;
         File file = new File(Environment.getExternalStorageDirectory()
@@ -143,12 +109,9 @@ public class MainActivity extends AppCompatActivity implements Serializable{
                     while (myReader.hasNextLine()) {
                         String data = myReader.nextLine();
                         String arr[] = data.split(",");
-                        list.add(new Photo(arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
+                        photoListPresenter.addPhoto(new Photo(arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
                     }
-                    for (Photo photo : list) {
-                        displayPhoto(photo.getFile()); // Just want to display the first photo that was added
-                        break;
-                    }
+                    displayPhoto(photoListPresenter.getPhoto());
                     break;
                 }
             }
@@ -160,45 +123,17 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         }
         //list.add(new Photo(R.mipmap.ic_launcher, 10.0, 1.1, "202000101", "this is a caption"));
     }
-    public void showOriginalView(View v) throws IOException {
-        boolean fileExists = false;
-        File file = new File(Environment.getExternalStorageDirectory()
-                .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
-        File[] fList = file.listFiles();
-        if (fList != null) {
-            for (File f : fList) {
-                if(f.getPath().contains("myPhotos")) {
-                    photosFilePath = f.getPath();
-                    fileExists = true;
-                    File myObj = new File(photosFilePath);
-                    Scanner myReader = new Scanner(myObj);
-                    list = new ArrayList<Photo>();
-                    while (myReader.hasNextLine()) {
-                        String data = myReader.nextLine();
-                        String arr[] = data.split(",");
-                        list.add(new Photo(arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
-                    }
-                    for (Photo photo: list) {
-                        displayPhoto(photo.getFile()); // Just want to display the first photo that was added
-                        break;
-                    }
-                    break;
-                }
-            }
-        }
-        if (fileExists == false) {
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File photosFile = File.createTempFile("myPhotos", ".txt",storageDir);
-            photosFilePath = photosFile.getAbsolutePath();
-        }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void clickReset(View v) throws IOException {
+        showOriginalView();
     }
     //share image
     public void shareImage(View v){
-        ImageView imageView = findViewById(R.id.ivGallery);
+        //ImageView imageView = findViewById(R.id.ivGallery);
         Drawable drawable=imageView.getDrawable();
         Bitmap bitmap=((BitmapDrawable)drawable).getBitmap();
-
-
         try {
             String filename = mCurrentPhotoPath.split(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), 2)[1];
             System.out.println(filename);
@@ -221,21 +156,18 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             e.printStackTrace();
         }
     }
+
     public void goToSearch(View view) throws IOException {
-        writeToFile();
         Intent intent = new Intent(this, SearchActivity.class);
         startActivityForResult(intent, SEARCH_ACTIVITY_REQUEST_CODE);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void deletePhoto(View view) throws IOException {
-        for (Photo photo: list) {
-            if(photo.getFile().equals(mCurrentPhotoPath)) {
-                list.remove(photo);
-                writeToFile();
-                displayPhoto("");
-                break;
-            }
-        }
+        photoListPresenter.deletePhoto(mCurrentPhotoPath);
+        displayPhoto(photoListPresenter.getPhoto());
     }
+
     public void takePhoto(View v) throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -254,121 +186,53 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         }
     }
 
-    public void findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
-        List<Photo> removedPhotos = new ArrayList<Photo>();
-        File file = new File(Environment.getExternalStorageDirectory()
-                .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
-        File[] fList = file.listFiles();
-        if (fList != null) {
-            for (File f : fList) {
-                String split[] = f.getPath().split("\\.");
-                if (!split[split.length-1].equals(".txt")) {
-                    if (!(f.lastModified() >= startTimestamp.getTime()
-                            && f.lastModified() <= endTimestamp.getTime())) {
-                        for (int i = 0; i < list.size(); i++) {
-                            if (f.getPath().equals(list.get(i).getFile())) {
-                                removedPhotos.add(list.get(i));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(topLeft.length() > 0 && bottomRight.length() > 0) {
-            String topLeftCoord[] = topLeft.split(",");
-            String bottomRightCoord[] = bottomRight.split(",");
-            int j = 0;
-            for (Photo photo: list) {
-                if (!(new Double(topLeftCoord[0]) < photo.getLat() && new Double(topLeftCoord[0]) < photo.getLng())
-                        && !(new Double(bottomRightCoord[0]) > photo.getLat() && new Double(bottomRightCoord[0]) > photo.getLng())) {
-                    removedPhotos.add(photo);
-                }
-                j++;
-            }
-        }
-        if (keywords.length() > 0) {
-            for(Photo ph : list) {
-                if (!ph.getCaption().contains(keywords)) {
-                    removedPhotos.add(ph);
-                }
-            }
-        }
-        list.removeAll(removedPhotos);
-        if(list.isEmpty() == true ) {
-            displayPhoto("");
-        } else {
-            for (Photo photo: list) {
-                displayPhoto(photo.getFile());
-                break;
-            }
-        }
-    }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void scrollPhotos(View v) {
+        Photo photo = null;
         switch (v.getId()) {
             case R.id.btnPrev:
-                if (index > 0) {
-                    index--;
-                }
+                photo = photoListPresenter.scrollPhotos(false);
                 break;
             case R.id.btnNext:
-                if (index < (list.size() - 1)) {
-                    index++;
-                }
+                photo = photoListPresenter.scrollPhotos(true);
                 break;
             default:
                 break;
         }
-        Iterator itr=list.iterator();
-        int i = 0;
-        while(itr.hasNext()){
-            Photo ph =(Photo)itr.next();
-            if (i == index) {
-                displayPhoto(ph.getFile());
-            }
-            i++;
+        if(photo == null){
+            displayPhoto(photoListPresenter.getPhoto());
+        } else {
+            displayPhoto(photo);
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addCaption(View v) {
-        Iterator itr=list.iterator();
-        EditText et = (EditText) findViewById(R.id.etCaption);
-        while(itr.hasNext()){
-            Photo ph =(Photo)itr.next();
-            if (ph.getFile().equals(currentPhoto)) {
-                ph.setCaption(et.getText().toString());
-                displayPhoto(ph.getFile());
-            }
-        }
-        writeToFile();
+        displayPhoto(photoListPresenter.addCaption(caption.getText().toString()));
     }
 
-    private void displayPhoto(String path) {
-        ImageView iv = (ImageView) findViewById(R.id.ivGallery);
-        TextView tv = (TextView) findViewById(R.id.tvTimestamp);
-        EditText et = (EditText) findViewById(R.id.etCaption);
-        if (path == null || path == "") {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void displayPhoto(Photo photo) {
+        if (photo == null) {
             System.out.println("R.mipmap.ic_launcher" + R.mipmap.ic_launcher);
-            iv.setImageResource(R.mipmap.ic_launcher);
-            et.setText("");
-            tv.setText("");
+            imageView.setImageResource(R.mipmap.ic_launcher);
+            caption.setText("");
+            time.setText("");
         } else {
-            mCurrentPhotoPath = path;
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getFile().equals(path)) {
-                    iv.setImageBitmap(BitmapFactory.decodeFile(path));
-                    tv.setText(list.get(i).getTimeStamp());
-                    if (list.get(i).getCaption() != null) {
-                        if (!list.get(i).getCaption().equals("null")) {
-                            et.setText(list.get(i).getCaption());
-                        } else {
-                            et.setText("");
-                        }
-                    } else {
-                        et.setText("");
-                    }
-                    currentPhoto = path;
-                    break;
+
+            mCurrentPhotoPath = photo.getFile();
+            imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+            time.setText(photo.getTimeStamp());
+            if (photo.getCaption() != null) {
+                if (!photo.getCaption().equals("null")) {
+                    caption.setText(photo.getCaption());
+                } else {
+                    caption.setText("");
+
                 }
+            } else {
+                caption.setText("");
             }
         }
     }
@@ -382,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -401,8 +266,8 @@ public class MainActivity extends AppCompatActivity implements Serializable{
                 String keywords = (String) data.getStringExtra("KEYWORDS");
                 String topLeft = data.getStringExtra("TOPLEFT");
                 String bottomRight = data.getStringExtra("BOTTOMRIGHT");
-                index = 0;
-                findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight);
+
+                photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight);
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -412,39 +277,24 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             }
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 double mLatitude = location.getLatitude();
                                 double mLongitude = location.getLongitude();
-                                ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
-                                mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
-                                EditText et = (EditText) findViewById(R.id.etCaption);
-                                et.setText("");
+                                //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+                                imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+                                //EditText et = (EditText) findViewById(R.id.etCaption);
+                                caption.setText("");
                                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                                list.add(new Photo(mCurrentPhotoPath, mLatitude, mLongitude, timeStamp));
-                                writeToFile();
-                                displayPhoto(mCurrentPhotoPath);
+                                Photo photo = new Photo(mCurrentPhotoPath, mLatitude, mLongitude, timeStamp);
+                                photoListPresenter.addPhoto(photo);
+                                displayPhoto(photo);
                             }
                         }
                     });
-        }
-    }
-
-    private void writeToFile() {
-        FileWriter myWriter = null;
-        try {
-            myWriter = new FileWriter(photosFilePath);
-            StringBuilder str = new StringBuilder("");
-            for (Photo photo: list) {
-                str.append(photo.toString());
-            }
-            myWriter.append(str);
-            myWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

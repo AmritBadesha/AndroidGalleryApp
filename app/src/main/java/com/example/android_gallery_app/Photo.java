@@ -2,7 +2,7 @@ package com.example.android_gallery_app;
 
 import java.io.Serializable;
 
-class Photo implements Graphic, Serializable {
+public class Photo implements Serializable {
     String file, caption, timeStamp;
     Double lat, lng;
 

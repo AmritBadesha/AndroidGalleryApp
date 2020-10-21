@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="9dp"
-        android:onClick="showOriginalView"
+        android:onClick="clickReset"
         android:text="Reset Data"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toBottomOf="@+id/snap" />
