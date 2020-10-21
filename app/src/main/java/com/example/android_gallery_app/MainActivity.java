@@ -1,5 +1,6 @@
 package com.example.android_gallery_app;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -14,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -254,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
         List<Photo> removedPhotos = new ArrayList<Photo>();
         File file = new File(Environment.getExternalStorageDirectory()
@@ -304,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void scrollPhotos(View v) {
         switch (v.getId()) {
             case R.id.btnPrev:
@@ -329,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             i++;
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addCaption(View v) {
         Iterator itr=list.iterator();
         EditText et = (EditText) findViewById(R.id.etCaption);
@@ -342,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         writeToFile();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         TextView tv = (TextView) findViewById(R.id.tvTimestamp);
@@ -353,9 +359,10 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             tv.setText("");
         } else {
             mCurrentPhotoPath = path;
+            list.stream().filter(item -> item.getFile().equals(path)).forEach(item ->
+                    iv.setImageBitmap(BitmapFactory.decodeFile(path)));
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getFile().equals(path)) {
-                    iv.setImageBitmap(BitmapFactory.decodeFile(path));
                     tv.setText(list.get(i).getTimeStamp());
                     if (list.get(i).getCaption() != null) {
                         if (!list.get(i).getCaption().equals("null")) {
@@ -382,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -412,6 +420,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             }
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
