@@ -14,7 +14,7 @@ public class Photo implements Serializable, Graphic {
         this.lng = lng;
         this.timeStamp = timeStamp;
     }
-    Photo(String file, Double lat, Double lng, String timeStamp, String caption) {
+    public Photo(String file, Double lat, Double lng, String timeStamp, String caption) {
         this.file = file;
         this.lat = lat;
         this.lng = lng;

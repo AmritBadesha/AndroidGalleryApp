@@ -19,7 +19,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     private List<Photo> list = new ArrayList<Photo>();
     private String currentPhotoPath;
     private int currentPhoto = 0;
-
+    public String fileTxtPathFull;
     private MainView mainView;
 
     public PhotoList(MainView mainView){
@@ -65,20 +65,20 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
                         }
                     }
                 }
-                //writeToFile();
+                writeToFile();
                 break;
             }
         }
     }
 
-    public String findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
+    public Photo findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
         currentPhoto = 0;
         List<Photo> removedPhotos = new ArrayList<Photo>();
         File file = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
         File[] fList = file.listFiles();
         if(startTimestamp == null || endTimestamp == null){
-            return "";
+            return null;
         }
         if (fList != null) {
             for (File f : fList) {
@@ -114,11 +114,13 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
                 }
             }
         }
+        System.out.println("HEY LOOK HERE TOO");
+        System.out.println(removedPhotos);
         list.removeAll(removedPhotos);
         if(list.isEmpty() == true ) {
-            return "";
+            return null;
         } else {
-            return list.get(0).getFile();
+            return list.get(0);
         }
     }
 
@@ -170,23 +172,22 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     }
 
     @Override
-    public void addPhoto(Photo photo) {
+    public void addPhoto(Photo photo, String fileTxtPath) {
         list.add(photo);
         currentPhotoPath = photo.getFile();
+        fileTxtPathFull = fileTxtPath;
         writeToFile();
     }
-
+    public void addPhoto(Photo photo) {
+        list.add(photo);
+    }
+    public void clearList () {
+        list.clear();
+    }
     private void writeToFile() {
         FileWriter myWriter = null;
         try {
-            if(list.size()>0){
-                myWriter = new FileWriter(list.get(0).getFile());
-            }else {
-                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                File photosFile = File.createTempFile("myPhotos", ".txt",storageDir);
-                myWriter = new FileWriter(photosFile.getAbsolutePath());
-            }
-
+            myWriter = new FileWriter(fileTxtPathFull);
             StringBuilder str = new StringBuilder("");
             for (Photo photo: list) {
                 str.append(photo.toString());

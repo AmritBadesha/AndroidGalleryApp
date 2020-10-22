@@ -103,11 +103,12 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                     photosFilePath = f.getPath();
                     fileExists = true;
                     File myObj = new File(photosFilePath);
+                    photoListPresenter.clearList();
                     Scanner myReader = new Scanner(myObj);
                     while (myReader.hasNextLine()) {
                         String data = myReader.nextLine();
                         String arr[] = data.split(",");
-                        photoListPresenter.addPhoto((Photo) graphicFactory.getGraphic("PHOTO", arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
+                        photoListPresenter.addPhoto(new Photo(arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
                     }
                     displayPhoto(photoListPresenter.getPhoto());
                     break;
@@ -264,7 +265,14 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                 String topLeft = data.getStringExtra("TOPLEFT");
                 String bottomRight = data.getStringExtra("BOTTOMRIGHT");
 
-                photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight);
+                Photo res = photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight);
+                System.out.println("HEY IM RIGHT HERE!!");
+                if(res != null) {
+                    System.out.println(res.getCaption());
+                    displayPhoto(res);
+                } else{
+                    System.out.println("NULL");
+                }
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -277,18 +285,22 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                         @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onSuccess(Location location) {
-                            double mLatitude = 0;
-                            double mLongitude = 0;
+                            double mLatitude = -1;
+                            double mLongitude = -1;
                             if (location != null) {
                                 mLatitude = location.getLatitude();
                                 mLongitude = location.getLongitude();
+
                             }
+                            //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
                             imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+                            //EditText et = (EditText) findViewById(R.id.etCaption);
                             caption.setText("");
                             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                            Photo photo = (Photo) graphicFactory.getGraphic("PHOTO", mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
-                            photoListPresenter.addPhoto(photo);
+                            Photo photo = new Photo(mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
+                            photoListPresenter.addPhoto(photo, photosFilePath);
                             displayPhoto(photo);
+
                         }
                     });
         }
