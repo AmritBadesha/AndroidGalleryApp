@@ -21,7 +21,7 @@ import java.util.List;
 
 public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     private List<Photo> list = new ArrayList<Photo>();
-    //private String currentPhoto;
+    private String currentPhotoPath;
     private int currentPhoto = 0;
 
     private MainView mainView;
@@ -35,10 +35,10 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
 
     public Photo addCaption(String caption) {
         Iterator itr=list.iterator();
-        Photo photo = list.get(currentPhoto);
+        Photo photo = null;
         while(itr.hasNext()){
             Photo ph =(Photo)itr.next();
-            if (ph.getFile().equals(currentPhoto)) {
+            if (ph.getFile().equals(currentPhotoPath)) {
                 ph.setCaption(caption);
                 photo = ph;
                 break;
@@ -161,6 +161,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
             Photo ph =(Photo)itr.next();
             if (i == currentPhoto) {
                 photo = ph;
+                currentPhotoPath = photo.getFile();
                 break;
                 //displayPhoto(ph.getFile());
             }
@@ -172,6 +173,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     @Override
     public void addPhoto(Photo photo) {
         list.add(photo);
+        currentPhotoPath = photo.getFile();
         writeToFile();
     }
 

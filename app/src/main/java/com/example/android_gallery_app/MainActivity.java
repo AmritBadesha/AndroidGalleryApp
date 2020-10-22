@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
         Bitmap bitmap=((BitmapDrawable)drawable).getBitmap();
         try {
             String filename = mCurrentPhotoPath.split(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), 2)[1];
-            System.out.println(filename);
             File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(), filename);
             FileOutputStream fOut = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
@@ -215,12 +214,10 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void displayPhoto(Photo photo) {
         if (photo == null) {
-            System.out.println("R.mipmap.ic_launcher" + R.mipmap.ic_launcher);
             imageView.setImageResource(R.mipmap.ic_launcher);
             caption.setText("");
             time.setText("");
         } else {
-
             mCurrentPhotoPath = photo.getFile();
             imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
             time.setText(photo.getTimeStamp());
