@@ -1,8 +1,6 @@
 package com.example.android_gallery_app.presenter;
 
-import android.widget.ImageView;
-
-import com.example.android_gallery_app.Photo;
+import com.example.android_gallery_app.model.Photo;
 
 import java.io.IOException;
 import java.util.Date;

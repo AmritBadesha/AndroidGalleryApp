@@ -1,8 +1,10 @@
-package com.example.android_gallery_app;
+package com.example.android_gallery_app.model;
+
+import com.example.android_gallery_app.presenter.Graphic;
 
 import java.io.Serializable;
 
-public class Photo implements Serializable {
+public class Photo implements Serializable, Graphic {
     String file, caption, timeStamp;
     Double lat, lng;
 

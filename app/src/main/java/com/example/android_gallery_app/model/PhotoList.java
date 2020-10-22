@@ -1,13 +1,9 @@
 package com.example.android_gallery_app.model;
 
-import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.android_gallery_app.Photo;
-import com.example.android_gallery_app.R;
 import com.example.android_gallery_app.presenter.PhotoListPresenter;
 import com.example.android_gallery_app.view.MainView;
 
@@ -21,21 +17,24 @@ import java.util.List;
 
 public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     private List<Photo> list = new ArrayList<Photo>();
-    //private String currentPhoto;
+    private String currentPhotoPath;
     private int currentPhoto = 0;
 
     private MainView mainView;
 
     public PhotoList(MainView mainView){
+
         this.mainView = mainView;
+        //writeToFile();
+
     }
 
     public Photo addCaption(String caption) {
         Iterator itr=list.iterator();
-        Photo photo = list.get(currentPhoto);
+        Photo photo = null;
         while(itr.hasNext()){
             Photo ph =(Photo)itr.next();
-            if (ph.getFile().equals(currentPhoto)) {
+            if (ph.getFile().equals(currentPhotoPath)) {
                 ph.setCaption(caption);
                 photo = ph;
                 break;
@@ -49,11 +48,24 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     public void deletePhoto(String mCurrentPhotoPath) throws IOException {
         for (Photo photo: list) {
             if(photo.getFile().equals(mCurrentPhotoPath)) {
-                list.remove(photo);
-                File file = getExternalFilesDir(photo.getFile());
-                file.delete();
+                File file = new File(Environment.getExternalStorageDirectory()
+                        .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
+                File[] fList = file.listFiles();
+                if (fList != null) {
+                    for (File f : fList) {
+                        String split[] = f.getPath().split("\\.");
+                        if (!split[split.length - 1].equals(".txt")) {
+                            for (int i = 0; i < list.size(); i++) {
+                                if (f.getPath().equals(photo.getFile())) {
+                                    f.delete();
+                                    list.remove(photo);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
                 //writeToFile();
-                //displayPhoto("");
                 break;
             }
         }
@@ -137,12 +149,15 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
                 currentPhoto++;
             }
         }
+        if(list.size()<1)
+            return null;
         Iterator itr=list.iterator();
         int i = 0; Photo photo = list.get(currentPhoto);
         while(itr.hasNext()){
             Photo ph =(Photo)itr.next();
             if (i == currentPhoto) {
                 photo = ph;
+                currentPhotoPath = photo.getFile();
                 break;
                 //displayPhoto(ph.getFile());
             }
@@ -154,6 +169,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     @Override
     public void addPhoto(Photo photo) {
         list.add(photo);
+        currentPhotoPath = photo.getFile();
         writeToFile();
     }
 
