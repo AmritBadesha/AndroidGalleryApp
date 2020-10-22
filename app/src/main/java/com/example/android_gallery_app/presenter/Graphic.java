@@ -1,4 +1,4 @@
-package com.example.android_gallery_app;
+package com.example.android_gallery_app.presenter;
 
 public interface Graphic{
     String getFile();

@@ -1,13 +1,9 @@
 package com.example.android_gallery_app.model;
 
-import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.android_gallery_app.Photo;
-import com.example.android_gallery_app.R;
 import com.example.android_gallery_app.presenter.PhotoListPresenter;
 import com.example.android_gallery_app.view.MainView;
 
