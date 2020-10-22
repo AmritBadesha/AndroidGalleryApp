@@ -48,6 +48,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     public void deletePhoto(String mCurrentPhotoPath) throws IOException {
         for (Photo photo: list) {
             if(photo.getFile().equals(mCurrentPhotoPath)) {
+                list.remove(photo);
                 File file = new File(Environment.getExternalStorageDirectory()
                         .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
                 File[] fList = file.listFiles();
@@ -64,7 +65,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
                             }
                         }
                     }
-                }
+                }*/
                 writeToFile();
                 break;
             }
@@ -118,7 +119,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
         System.out.println(removedPhotos);
         list.removeAll(removedPhotos);
         if(list.isEmpty() == true ) {
-            return null;
+            return new Photo("", 0.0 , 0.0, "");
         } else {
             return list.get(0);
         }

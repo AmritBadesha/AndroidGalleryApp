@@ -264,15 +264,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                 String keywords = (String) data.getStringExtra("KEYWORDS");
                 String topLeft = data.getStringExtra("TOPLEFT");
                 String bottomRight = data.getStringExtra("BOTTOMRIGHT");
-
-                Photo res = photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight);
-                System.out.println("HEY IM RIGHT HERE!!");
-                if(res != null) {
-                    System.out.println(res.getCaption());
-                    displayPhoto(res);
-                } else{
-                    System.out.println("NULL");
-                }
+                displayPhoto(photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight));
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
