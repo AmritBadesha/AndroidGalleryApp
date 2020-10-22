@@ -71,7 +71,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
         }
     }
 
-    public String findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
+    public Photo findPhotos_second(Date startTimestamp, Date endTimestamp, String keywords, String topLeft, String bottomRight) {
         currentPhoto = 0;
         List<Photo> removedPhotos = new ArrayList<Photo>();
         File file = new File(Environment.getExternalStorageDirectory()
@@ -113,9 +113,9 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
         }
         list.removeAll(removedPhotos);
         if(list.isEmpty() == true ) {
-            return "";
+            return new Photo("", 0.0 , 0.0, "");
         } else {
-            return list.get(0).getFile();
+            return list.get(0);
         }
     }
 

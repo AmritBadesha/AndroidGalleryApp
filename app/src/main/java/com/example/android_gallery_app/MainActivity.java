@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                 String topLeft = data.getStringExtra("TOPLEFT");
                 String bottomRight = data.getStringExtra("BOTTOMRIGHT");
 
-                photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight);
+                displayPhoto(photoListPresenter.findPhotos_second(startTimestamp, endTimestamp, keywords, topLeft, bottomRight));
             }
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
