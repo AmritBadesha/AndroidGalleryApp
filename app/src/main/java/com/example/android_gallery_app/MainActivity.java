@@ -252,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                 try {
                     String from = (String) data.getStringExtra("STARTTIMESTAMP");
                     String to = (String) data.getStringExtra("ENDTIMESTAMP");
+                    System.out.println(from);
+                    System.out.println(to);
                     startTimestamp = format.parse(from);
                     endTimestamp = format.parse(to);
                 } catch (Exception ex) {
@@ -275,19 +277,18 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                         @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
+                            double mLatitude = 0;
+                            double mLongitude = 0;
                             if (location != null) {
-                                double mLatitude = location.getLatitude();
-                                double mLongitude = location.getLongitude();
-                                //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
-                                imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
-                                //EditText et = (EditText) findViewById(R.id.etCaption);
-                                caption.setText("");
-                                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                                Photo photo = (Photo) graphicFactory.getGraphic("PHOTO", mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
-                                photoListPresenter.addPhoto(photo);
-                                displayPhoto(photo);
+                                mLatitude = location.getLatitude();
+                                mLongitude = location.getLongitude();
                             }
+                            imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+                            caption.setText("");
+                            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                            Photo photo = (Photo) graphicFactory.getGraphic("PHOTO", mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
+                            photoListPresenter.addPhoto(photo);
+                            displayPhoto(photo);
                         }
                     });
         }

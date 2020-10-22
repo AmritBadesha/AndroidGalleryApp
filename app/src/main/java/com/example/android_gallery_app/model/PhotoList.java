@@ -77,6 +77,9 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
         File file = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
         File[] fList = file.listFiles();
+        if(startTimestamp == null || endTimestamp == null){
+            return "";
+        }
         if (fList != null) {
             for (File f : fList) {
                 String split[] = f.getPath().split("\\.");
