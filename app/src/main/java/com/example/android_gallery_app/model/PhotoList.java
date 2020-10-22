@@ -65,7 +65,7 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
                             }
                         }
                     }
-                }*/
+                }
                 writeToFile();
                 break;
             }
