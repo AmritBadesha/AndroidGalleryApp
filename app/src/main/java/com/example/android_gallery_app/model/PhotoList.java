@@ -182,7 +182,23 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
     private void writeToFile() {
         FileWriter myWriter = null;
         try {
-            myWriter = new FileWriter(fileTxtPathFull);
+            System.out.println("fileTxtPathFull" + fileTxtPathFull);
+            if (fileTxtPathFull != null) {
+                myWriter = new FileWriter(fileTxtPathFull);
+            } else {
+                File file = new File(Environment.getExternalStorageDirectory()
+                        .getAbsolutePath(), "/Android/data/com.example.android_gallery_app/files/Pictures");
+                File[] fList = file.listFiles();
+                if (fList != null) {
+                    for (File f : fList) {
+                        if (f.getPath().contains("myPhotos")) {
+                            myWriter = new FileWriter(f.getPath());
+                            break;
+                        }
+                    }
+                }
+            }
+
             StringBuilder str = new StringBuilder("");
             for (Photo photo: list) {
                 str.append(photo.toString());
