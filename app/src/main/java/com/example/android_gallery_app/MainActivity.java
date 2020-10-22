@@ -103,11 +103,12 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                     photosFilePath = f.getPath();
                     fileExists = true;
                     File myObj = new File(photosFilePath);
+                    photoListPresenter.clearList();
                     Scanner myReader = new Scanner(myObj);
                     while (myReader.hasNextLine()) {
                         String data = myReader.nextLine();
                         String arr[] = data.split(",");
-                        photoListPresenter.addPhoto((Photo) graphicFactory.getGraphic("PHOTO", arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
+                        photoListPresenter.addPhoto(new Photo(arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
                     }
                     displayPhoto(photoListPresenter.getPhoto());
                     break;
@@ -284,8 +285,8 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                                 //EditText et = (EditText) findViewById(R.id.etCaption);
                                 caption.setText("");
                                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                                Photo photo = (Photo) graphicFactory.getGraphic("PHOTO", mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
-                                photoListPresenter.addPhoto(photo);
+                                Photo photo = new Photo ( mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
+                                photoListPresenter.addPhoto(photo, photosFilePath);
                                 displayPhoto(photo);
                             }
                         }
