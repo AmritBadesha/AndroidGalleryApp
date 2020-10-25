@@ -29,7 +29,9 @@
         android:focusable="true"
         android:textSize="24sp"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintTop_toTopOf="parent" />
+        app2:layout_constraintTop_toTopOf="parent"
+        android:autofillHints=""
+        android:inputType="TODO" />
 
     <TextView
         android:id="@+id/tvToDateTime"
@@ -50,7 +52,9 @@
         android:ems="10"
         android:textSize="24sp"
         app2:layout_constraintStart_toStartOf="@+id/etFromDateTime"
-        app2:layout_constraintTop_toTopOf="@+id/etFromDateTime" />
+        app2:layout_constraintTop_toTopOf="@+id/etFromDateTime"
+        android:autofillHints=""
+        android:inputType="TODO" />
 
     <TextView
         android:id="@+id/tvKeywords"
@@ -72,7 +76,9 @@
         android:ems="10"
         android:textSize="24sp"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/tvKeywords" />
+        app2:layout_constraintTop_toBottomOf="@+id/tvKeywords"
+        android:autofillHints=""
+        android:inputType="TODO" />
 
     <EditText
         android:id="@+id/topLeft"
@@ -83,7 +89,9 @@
         android:ems="10"
         android:textSize="24sp"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/textView" />
+        app2:layout_constraintTop_toBottomOf="@+id/textView"
+        android:autofillHints=""
+        android:inputType="TODO" />
 
     <EditText
         android:id="@+id/BottomRight"
@@ -94,7 +102,9 @@
         android:ems="10"
         android:textSize="24sp"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app2:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:autofillHints=""
+        android:inputType="TODO" />
 
     <Button
         android:id="@+id/btnCancel"
