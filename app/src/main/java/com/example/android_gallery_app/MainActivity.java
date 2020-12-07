@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                     while (myReader.hasNextLine()) {
                         String data = myReader.nextLine();
                         String arr[] = data.split(",");
-                        photoListPresenter.addPhoto(new Photo(arr[0], new Double(arr[2]), new Double(arr[1]), arr[3], arr[4]));
+                        photoListPresenter.addPhoto(new Photo(arr[0], Double.valueOf(arr[2]), Double.valueOf(arr[1]), arr[3], arr[4]));
                     }
                     displayPhoto(photoListPresenter.getPhoto());
                     break;
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg",storageDir);
@@ -248,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd HH:mm:ss");
+                @SuppressLint("SimpleDateFormat") DateFormat format = new SimpleDateFormat("yyyy‐MM‐dd HH:mm:ss");
                 Date startTimestamp, endTimestamp;
                 try {
                     String from = (String) data.getStringExtra("STARTTIMESTAMP");
@@ -284,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Mai
                                 imageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
                                 //EditText et = (EditText) findViewById(R.id.etCaption);
                                 caption.setText("");
-                                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                                @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                                 Photo photo = new Photo ( mCurrentPhotoPath, mLatitude, mLongitude, timeStamp, "");
                                 photoListPresenter.addPhoto(photo, photosFilePath);
                                 displayPhoto(photo);

@@ -97,8 +97,8 @@ public class PhotoList extends AppCompatActivity implements PhotoListPresenter {
             String bottomRightCoord[] = bottomRight.split(",");
             int j = 0;
             for (Photo photo: list) {
-                if (!(new Double(topLeftCoord[0]) < photo.getLat() && new Double(topLeftCoord[0]) < photo.getLng())
-                        && !(new Double(bottomRightCoord[0]) > photo.getLat() && new Double(bottomRightCoord[0]) > photo.getLng())) {
+                if (!(Double.valueOf(topLeftCoord[0]) < photo.getLat() && Double.valueOf(topLeftCoord[0]) < photo.getLng())
+                        && !(Double.valueOf(bottomRightCoord[0]) > photo.getLat() && Double.valueOf(bottomRightCoord[0]) > photo.getLng())) {
                     removedPhotos.add(photo);
                 }
                 j++;

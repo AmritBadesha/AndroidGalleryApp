@@ -20,7 +20,8 @@
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toTopOf="parent"
         app2:srcCompat="@drawable/ic_launcher_foreground"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        tools:srcCompat="@tools:sample/backgrounds/scenic"
+        android:contentDescription="TODO" />
 
 
     <Button
@@ -86,7 +87,8 @@
         android:text="Add Caption Text"
         app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintStart_toStartOf="parent" />
+        app2:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btnSearch"
